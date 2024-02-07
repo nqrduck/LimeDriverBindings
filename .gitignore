@@ -52,5 +52,15 @@ Thumbs.db
 # Log files
 *.log
 
+# Python cache data
+__pycache__/
+*.pyc
+
+# Cython / Python build files
+build/
+*.c
+src/limedriver.egg-info
+
 # Data
 data/
+venv/
