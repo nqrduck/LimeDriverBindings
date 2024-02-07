@@ -15,7 +15,7 @@ classifiers = [
 
 [build-system]
 requires = [
-    "setuptools>=42",
+    "setuptools",
     "wheel",
-    "Cython>=0.29.21"
+    "Cython"
 ]
