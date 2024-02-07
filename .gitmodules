@@ -1,0 +1,3 @@
+[submodule "extern/limedriver"]
+	path = extern/limedriver
+	url = git@github.com:nqrduck/LimeDriver.git
