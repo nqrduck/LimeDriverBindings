@@ -8,6 +8,8 @@ from libc.string cimport memcpy, strcpy
 
 from libcpp.string cimport string
 
+import pathlib
+
 cdef extern from "limedriver.h":
     cdef struct LimeConfig_t:
         float srate
@@ -149,7 +151,32 @@ cdef class PyLimeConfig:
 
     def __dealloc__(self):
         if self._config is not NULL:
+            free(self._config.p_frq)
+            free(self._config.p_dur)    
+            free(self._config.p_dur_smp)
+            free(self._config.p_offs)
+            free(self._config.p_amp)
+            free(self._config.p_frq_smp)
+            free(self._config.p_pha)
+            free(self._config.p_phacyc_N)
+            free(self._config.p_phacyc_lev)
+            free(self._config.am_frq)
+            free(self._config.am_pha)
+            free(self._config.am_depth)
+            free(self._config.am_mode)
+            free(self._config.am_frq_smp)
+            free(self._config.fm_frq)
+            free(self._config.fm_pha)
+            free(self._config.fm_width)
+            free(self._config.fm_mode)
+            free(self._config.fm_frq_smp)
+            free(self._config.p_c0_en)
+            free(self._config.p_c1_en)
+            free(self._config.p_c2_en)
+            free(self._config.p_c3_en)
+
             free(self._config)
+
 
     @property
     def srate(self):
@@ -802,3 +829,8 @@ cdef class PyLimeConfig:
 
     def run(self):
         return run_experiment_from_LimeCfg(self._config[0])
+
+    def get_path(self):
+        path = self.save_path + self.file_stamp + '_' + self.file_pattern + '.h5'
+        path = pathlib.Path(path).absolute()
+        return path

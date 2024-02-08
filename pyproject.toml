@@ -17,7 +17,10 @@ classifiers = [
 requires = [
     "setuptools",
     "wheel",
-    "Cython"
+    "Cython",
+    "h5py",
+    "numpy",
+    'matplotlib',
 ]
 
 build-backend = "setuptools.build_meta"
