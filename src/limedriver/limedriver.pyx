@@ -85,10 +85,13 @@ cdef extern from "limedriver.h":
 cdef class PyLimeConfig:
     cdef LimeConfig_t* _config
 
-    def __cinit__(self):
+    def __cinit__(self, Npulses):
         self._config = <LimeConfig_t*>malloc(sizeof(LimeConfig_t))
         if self._config is NULL:
             raise MemoryError()
+
+        # Set Npulses
+        self._config.Npulses = Npulses
 
         # Allocate memory for string fields
         self._config.file_pattern = <char*>malloc(256)
@@ -96,6 +99,9 @@ cdef class PyLimeConfig:
         self._config.save_path = <char*>malloc(256)
         self._config.stamp_start = <char*>malloc(256)
         self._config.stamp_end = <char*>malloc(256)
+
+        # Allocate memory for arrays with Npulses elements
+        self._config.p_dur = <double*>malloc(Npulses * sizeof(double))
 
 
     def __dealloc__(self):
@@ -234,11 +240,12 @@ cdef class PyLimeConfig:
 
     @property
     def p_dur(self):
-        return self._config.p_dur
+        return [self._config.p_dur[i] for i in range(self._config.Npulses)]
 
     @p_dur.setter
-    def p_dur(self, double *value):
-        self._config.p_dur = <double>value
+    def p_dur(self, list value):
+        for i in range(len(value)):
+            self._config.p_dur[i] = value[i]
 
     # Arrays
 
