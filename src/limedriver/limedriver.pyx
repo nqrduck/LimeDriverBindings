@@ -105,7 +105,41 @@ cdef class PyLimeConfig:
         # Allocate memory for arrays with Npulses elements
         self._config.p_dur = <double*>malloc(Npulses * sizeof(double))
         self._config.p_dur_smp = <int*>malloc(Npulses * sizeof(int))
+        self._config.p_offs = <int*>malloc(Npulses * sizeof(int))
+        self._config.p_amp = <double*>malloc(Npulses * sizeof(double))
+        self._config.p_frq = <double*>malloc(Npulses * sizeof(double))
+        self._config.p_frq_smp = <double*>malloc(Npulses * sizeof(double))
+        self._config.p_pha = <double*>malloc(Npulses * sizeof(double))
+        self._config.p_phacyc_N = <int*>malloc(Npulses * sizeof(int))
+        self._config.p_phacyc_lev = <int*>malloc(Npulses * sizeof(int))
+        self._config.am_frq = <double*>malloc(Npulses * sizeof(double))
+        self._config.am_pha = <double*>malloc(Npulses * sizeof(double))
+        self._config.am_depth = <double*>malloc(Npulses * sizeof(double))
+        self._config.am_mode = <int*>malloc(Npulses * sizeof(int))
+        self._config.am_frq_smp = <double*>malloc(Npulses * sizeof(double))
+        self._config.fm_frq = <double*>malloc(Npulses * sizeof(double))
+        self._config.fm_pha = <double*>malloc(Npulses * sizeof(double))
+        self._config.fm_width = <double*>malloc(Npulses * sizeof(double))
+        self._config.fm_mode = <int*>malloc(Npulses * sizeof(int))
+        self._config.fm_frq_smp = <double*>malloc(Npulses * sizeof(double))
+        self._config.p_c0_en = <int*>malloc(Npulses * sizeof(int))
+        self._config.p_c1_en = <int*>malloc(Npulses * sizeof(int))
+        self._config.p_c2_en = <int*>malloc(Npulses * sizeof(int))
+        self._config.p_c3_en = <int*>malloc(Npulses * sizeof(int))
 
+        # Memory for arrays with 4 elements
+        self._config.RX_gain_rback = <int*>malloc(4 * sizeof(int))
+        self._config.TX_gain_rback = <int*>malloc(3 * sizeof(int))
+        self._config.c0_tim = <int*>malloc(4 * sizeof(int))
+        self._config.c1_tim = <int*>malloc(4 * sizeof(int))
+        self._config.c2_tim = <int*>malloc(4 * sizeof(int))
+        self._config.c3_tim = <int*>malloc(4 * sizeof(int))
+
+        # Memory for arrays with 5 elements
+        self._config.c0_synth = <int*>malloc(5 * sizeof(int))
+        self._config.c1_synth = <int*>malloc(5 * sizeof(int))
+        self._config.c2_synth = <int*>malloc(5 * sizeof(int))
+        self._config.c3_synth = <int*>malloc(5 * sizeof(int))
 
     def __dealloc__(self):
         if self._config is not NULL:
