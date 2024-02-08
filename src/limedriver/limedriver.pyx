@@ -82,6 +82,8 @@ cdef extern from "limedriver.h":
 
         string stamp_start
         string stamp_end
+
+    cdef LimeConfig_t initializeLimeConfig(int Npulses)
         
 
 cdef class PyLimeConfig:
@@ -716,3 +718,16 @@ cdef class PyLimeConfig:
     @stamp_end.setter
     def stamp_end(self, value):
         self._config.stamp_end = value.encode('utf-8')
+
+    @classmethod
+    def initialize(cls, int Npulses):
+        cdef LimeConfig_t config = initializeLimeConfig(Npulses)
+
+        cdef PyLimeConfig instance = cls.__new__(cls, Npulses)
+        instance._config = <LimeConfig_t*>malloc(sizeof(LimeConfig_t))
+        
+        if instance._config is NULL:
+            raise MemoryError()
+        memcpy(instance._config, &config, sizeof(LimeConfig_t))
+
+        return instance
