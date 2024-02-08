@@ -3,6 +3,8 @@
 
 from cpython.mem cimport PyMem_Malloc, PyMem_Free
 from libc.stdlib cimport malloc, free
+from libc.string cimport memcpy
+
 
 from libcpp.string cimport string
 
@@ -87,6 +89,14 @@ cdef class PyLimeConfig:
         self._config = <LimeConfig_t*>malloc(sizeof(LimeConfig_t))
         if self._config is NULL:
             raise MemoryError()
+
+        # Allocate memory for string fields
+        self._config.file_pattern = <char*>malloc(256)
+        self._config.file_stamp = <char*>malloc(256)
+        self._config.save_path = <char*>malloc(256)
+        self._config.stamp_start = <char*>malloc(256)
+        self._config.stamp_end = <char*>malloc(256)
+
 
     def __dealloc__(self):
         if self._config is not NULL:
@@ -220,6 +230,16 @@ cdef class PyLimeConfig:
     def Npulses(self, int value):
         self._config.Npulses = value
 
+    # Pointers
+
+    @property
+    def p_dur(self):
+        return self._config.p_dur
+
+    @p_dur.setter
+    def p_dur(self, double *value):
+        self._config.p_dur = <double>value
+
     # Arrays
 
     @property
@@ -281,7 +301,7 @@ cdef class PyLimeConfig:
         return self._config.save_path.decode('utf-8')
 
     @save_path.setter
-    def save_path(self, value):
+    def save_path(self, str value):
         self._config.save_path = value.encode('utf-8')
 
     @property
@@ -299,4 +319,3 @@ cdef class PyLimeConfig:
     @stamp_end.setter
     def stamp_end(self, value):
         self._config.stamp_end = value.encode('utf-8')
-
