@@ -20,7 +20,7 @@ jobs:
 
     - name: Install dependencies
       run: |
-        yes | pacman -S python python-pip hdf5 limesuite python-build
+        yes | pacman -S python python-pip hdf5 limesuite python-build git
 
     - name: Build the package
       run: |
