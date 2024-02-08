@@ -156,6 +156,7 @@ cdef class PyLimeConfig:
     def TX_IcorrDC(self, int value):
         self._config.TX_IcorrDC = value
 
+    @property
     def TX_QcorrDC(self):
         return self._config.TX_QcorrDC
 
@@ -234,6 +235,7 @@ cdef class PyLimeConfig:
         for i in range(4):
             self._config.RX_gain_rback[i] = values[i]
 
+    @property
     def TX_gain_rback(self):
         return [self._config.TX_gain_rback[i] for i in range(3)]
 
@@ -297,3 +299,4 @@ cdef class PyLimeConfig:
     @stamp_end.setter
     def stamp_end(self, value):
         self._config.stamp_end = value.encode('utf-8')
+

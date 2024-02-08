@@ -6,11 +6,12 @@ import os
 
 from Cython.Build import cythonize
 
+os.environ['CXX'] = 'h5c++'
+
 class BuildExtCommand(build_ext):
     """Custom build_ext command to ensure that the submodule is retrieved and built."""
 
     def build_extensions(self):
-        os.environ['CXX'] = 'h5c++'
         super().build_extensions()
 
     def run(self):
@@ -31,7 +32,7 @@ class BuildExtCommand(build_ext):
 
 ext_modules = [
     Extension(
-        'limedriver',
+        'limedriver.binding',
         sources=['src/limedriver/limedriver.pyx', 'extern/limedriver/src/limedriver.cpp'],
         include_dirs=["extern/limedriver/src/"],
         libraries=["LimeSuite"],
