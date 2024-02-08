@@ -32,9 +32,10 @@ class BuildExtCommand(build_ext):
 ext_modules = [
     Extension(
         'limedriver',
-        sources=['src/limedriver/limedriver.pyx'],
+        sources=['src/limedriver/limedriver.pyx', 'extern/limedriver/src/limedriver.cpp'],
         include_dirs=["extern/limedriver/src/"],
         libraries=["LimeSuite"],
+        language="c++",
     ),
 ]
 

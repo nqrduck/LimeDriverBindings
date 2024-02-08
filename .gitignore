@@ -59,6 +59,7 @@ __pycache__/
 # Cython / Python build files
 build/
 *.c
+*.cpp
 src/limedriver.egg-info
 
 # Data
