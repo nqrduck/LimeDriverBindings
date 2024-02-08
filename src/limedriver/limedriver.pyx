@@ -74,6 +74,8 @@ cdef extern from "limedriver.h":
         int buffersize
         
         int override_init
+        int override_save
+
         string file_pattern
         string file_stamp
         string save_path
@@ -102,6 +104,7 @@ cdef class PyLimeConfig:
 
         # Allocate memory for arrays with Npulses elements
         self._config.p_dur = <double*>malloc(Npulses * sizeof(double))
+        self._config.p_dur_smp = <int*>malloc(Npulses * sizeof(int))
 
 
     def __dealloc__(self):
@@ -236,6 +239,86 @@ cdef class PyLimeConfig:
     def Npulses(self, int value):
         self._config.Npulses = value
 
+    @property
+    def averages(self):
+        return self._config.averages
+
+    @averages.setter
+    def averages(self, int value):
+        self._config.averages = value
+
+    @property
+    def repetitions(self):
+        return self._config.repetitions
+
+    @repetitions.setter
+    def repetitions(self, int value):
+        self._config.repetitions = value
+
+    @property
+    def pcyc_bef_avg(self):
+        return self._config.pcyc_bef_avg
+
+    @pcyc_bef_avg.setter
+    def pcyc_bef_avg(self, int value):
+        self._config.pcyc_bef_avg = value
+
+    @property
+    def reptime_secs(self):
+        return self._config.reptime_secs
+
+    @reptime_secs.setter
+    def reptime_secs(self, float value):
+        self._config.reptime_secs = value
+
+    @property
+    def rectime_secs(self):
+        return self._config.rectime_secs
+
+    @rectime_secs.setter
+    def rectime_secs(self, float value):
+        self._config.rectime_secs = value
+
+    @property
+    def reptime_smps(self):
+        return self._config.reptime_smps
+
+    @reptime_smps.setter
+    def reptime_smps(self, int value):
+        self._config.reptime_smps = value
+
+    @property
+    def rectime_smps(self):
+        return self._config.rectime_smps
+
+    @rectime_smps.setter
+    def rectime_smps(self, int value):
+        self._config.rectime_smps = value
+
+    @property
+    def buffersize(self):
+        return self._config.buffersize
+
+    @buffersize.setter
+    def buffersize(self, int value):
+        self._config.buffersize = value
+
+    @property
+    def override_init(self):
+        return self._config.override_init
+
+    @override_init.setter
+    def override_init(self, int value):
+        self._config.override_init = value
+
+    @property
+    def override_save(self):
+        return self._config.override_save
+
+    @override_save.setter
+    def override_save(self, int value):
+        self._config.override_save = value
+
     # Pointers
 
     @property
@@ -246,6 +329,204 @@ cdef class PyLimeConfig:
     def p_dur(self, list value):
         for i in range(len(value)):
             self._config.p_dur[i] = value[i]
+
+    @property
+    def p_dur_smp(self):
+        return [self._config.p_dur_smp[i] for i in range(self._config.Npulses)]
+
+    @p_dur_smp.setter
+    def p_dur_smp(self, list value):
+        for i in range(len(value)):
+            self._config.p_dur_smp[i] = value[i]
+
+    @property
+    def p_offs(self):
+        return [self._config.p_offs[i] for i in range(self._config.Npulses)]
+
+    @p_offs.setter
+    def p_offs(self, list value):
+        for i in range(len(value)):
+            self._config.p_offs[i] = value[i]
+
+    @property
+    def p_amp(self):
+        return [self._config.p_amp[i] for i in range(self._config.Npulses)]
+
+    @p_amp.setter
+    def p_amp(self, list value):
+        for i in range(len(value)):
+            self._config.p_amp[i] = value[i]
+
+    @property
+    def p_frq(self):
+        return [self._config.p_frq[i] for i in range(self._config.Npulses)]
+
+    @p_frq.setter
+    def p_frq(self, list value):
+        for i in range(len(value)):
+            self._config.p_frq[i] = value[i]
+
+    @property
+    def p_frq_smp(self):
+        return [self._config.p_frq_smp[i] for i in range(self._config.Npulses)]
+
+    @p_frq_smp.setter
+    def p_frq_smp(self, list value):
+        for i in range(len(value)):
+            self._config.p_frq_smp[i] = value[i]
+
+    @property
+    def p_pha(self):
+        return [self._config.p_pha[i] for i in range(self._config.Npulses)]
+
+    @p_pha.setter
+    def p_pha(self, list value):
+        for i in range(len(value)):
+            self._config.p_pha[i] = value[i]
+
+    @property
+    def p_phacyc_N(self):
+        return [self._config.p_phacyc_N[i] for i in range(self._config.Npulses)]
+
+    @p_phacyc_N.setter
+    def p_phacyc_N(self, list value):
+        for i in range(len(value)):
+            self._config.p_phacyc_N[i] = value[i]
+
+    @property
+    def p_phacyc_lev(self):
+        return [self._config.p_phacyc_lev[i] for i in range(self._config.Npulses)]
+
+    @p_phacyc_lev.setter
+    def p_phacyc_lev(self, list value):
+        for i in range(len(value)):
+            self._config.p_phacyc_lev[i] = value[i]
+
+    @property
+    def am_frq(self):
+        return [self._config.am_frq[i] for i in range(self._config.Npulses)]
+
+    @am_frq.setter
+    def am_frq(self, list value):
+        for i in range(len(value)):
+            self._config.am_frq[i] = value[i]
+
+    @property
+    def am_pha(self):
+        return [self._config.am_pha[i] for i in range(self._config.Npulses)]
+
+    @am_pha.setter
+    def am_pha(self, list value):
+        for i in range(len(value)):
+            self._config.am_pha[i] = value[i]
+
+    @property
+    def am_depth(self):
+        return [self._config.am_depth[i] for i in range(self._config.Npulses)]
+
+    @am_depth.setter
+    def am_depth(self, list value):
+        for i in range(len(value)):
+            self._config.am_depth[i] = value[i]
+
+    @property
+    def am_mode(self):
+        return [self._config.am_mode[i] for i in range(self._config.Npulses)]
+
+    @am_mode.setter
+    def am_mode(self, list value):
+        for i in range(len(value)):
+            self._config.am_mode[i] = value[i]
+
+    @property
+    def am_frq_smp(self):
+        return [self._config.am_frq_smp[i] for i in range(self._config.Npulses)]
+
+    @am_frq_smp.setter
+    def am_frq_smp(self, list value):
+        for i in range(len(value)):
+            self._config.am_frq_smp[i] = value[i]
+
+    @property
+    def fm_frq(self):
+        return [self._config.fm_frq[i] for i in range(self._config.Npulses)]
+
+    @fm_frq.setter
+    def fm_frq(self, list value):
+        for i in range(len(value)):
+            self._config.fm_frq[i] = value[i]
+
+    @property
+    def fm_pha(self):
+        return [self._config.fm_pha[i] for i in range(self._config.Npulses)]
+
+    @fm_pha.setter
+    def fm_pha(self, list value):
+        for i in range(len(value)):
+            self._config.fm_pha[i] = value[i]
+
+    @property
+    def fm_width(self):
+        return [self._config.fm_width[i] for i in range(self._config.Npulses)]
+
+    @fm_width.setter
+    def fm_width(self, list value):
+        for i in range(len(value)):
+            self._config.fm_width[i] = value[i]
+
+    @property
+    def fm_mode(self):
+        return [self._config.fm_mode[i] for i in range(self._config.Npulses)]
+
+    @fm_mode.setter
+    def fm_mode(self, list value):
+        for i in range(len(value)):
+            self._config.fm_mode[i] = value[i]
+
+    @property
+    def fm_frq_smp(self):
+        return [self._config.fm_frq_smp[i] for i in range(self._config.Npulses)]
+
+    @fm_frq_smp.setter
+    def fm_frq_smp(self, list value):
+        for i in range(len(value)):
+            self._config.fm_frq_smp[i] = value[i]
+
+    @property
+    def p_c0_en(self):
+        return [self._config.p_c0_en[i] for i in range(self._config.Npulses)]
+
+    @p_c0_en.setter
+    def p_c0_en(self, list value):
+        for i in range(len(value)):
+            self._config.p_c0_en[i] = value[i]
+
+    @property
+    def p_c1_en(self):
+        return [self._config.p_c1_en[i] for i in range(self._config.Npulses)]
+
+    @p_c1_en.setter
+    def p_c1_en(self, list value):
+        for i in range(len(value)):
+            self._config.p_c1_en[i] = value[i]
+
+    @property
+    def p_c2_en(self):
+        return [self._config.p_c2_en[i] for i in range(self._config.Npulses)]
+
+    @p_c2_en.setter
+    def p_c2_en(self, list value):
+        for i in range(len(value)):
+            self._config.p_c2_en[i] = value[i]
+
+    @property
+    def p_c3_en(self):
+        return [self._config.p_c3_en[i] for i in range(self._config.Npulses)]
+
+    @p_c3_en.setter
+    def p_c3_en(self, list value):
+        for i in range(len(value)):
+            self._config.p_c3_en[i] = value[i]
 
     # Arrays
 
@@ -284,8 +565,83 @@ cdef class PyLimeConfig:
         for i in range(4):
             self._config.c0_tim[i] = values[i]
 
-    
-    
+    @property
+    def c1_tim(self):
+        return [self._config.c1_tim[i] for i in range(4)]
+
+    @c1_tim.setter
+    def c1_tim(self, values):
+        if not isinstance(values, list) or len(values) != 4:
+            raise ValueError("c1_tim must be a list with 4 integers.")
+        for i in range(4):
+            self._config.c1_tim[i] = values[i]
+
+    @property
+    def c2_tim(self):
+        return [self._config.c2_tim[i] for i in range(4)]
+
+    @c2_tim.setter
+    def c2_tim(self, values):
+        if not isinstance(values, list) or len(values) != 4:
+            raise ValueError("c2_tim must be a list with 4 integers.")
+        for i in range(4):
+            self._config.c2_tim[i] = values[i]
+
+    @property
+    def c3_tim(self):
+        return [self._config.c3_tim[i] for i in range(4)]
+
+    @c3_tim.setter
+    def c3_tim(self, values):
+        if not isinstance(values, list) or len(values) != 4:
+            raise ValueError("c3_tim must be a list with 4 integers.")
+        for i in range(4):
+            self._config.c3_tim[i] = values[i]
+
+    @property
+    def c0_synth(self):
+        return [self._config.c0_synth[i] for i in range(5)]
+
+    @c0_synth.setter
+    def c0_synth(self, values):
+        if not isinstance(values, list) or len(values) != 5:
+            raise ValueError("c0_synth must be a list with 5 integers.")
+        for i in range(5):
+            self._config.c0_synth[i] = values[i]
+
+    @property
+    def c1_synth(self):
+        return [self._config.c1_synth[i] for i in range(5)]
+
+    @c1_synth.setter
+    def c1_synth(self, values):
+        if not isinstance(values, list) or len(values) != 5:
+            raise ValueError("c1_synth must be a list with 5 integers.")
+        for i in range(5):
+            self._config.c1_synth[i] = values[i]
+
+    @property
+    def c2_synth(self):
+        return [self._config.c2_synth[i] for i in range(5)]
+
+    @c2_synth.setter
+    def c2_synth(self, values):
+        if not isinstance(values, list) or len(values) != 5:
+            raise ValueError("c2_synth must be a list with 5 integers.")
+        for i in range(5):
+            self._config.c2_synth[i] = values[i]
+
+    @property
+    def c3_synth(self):
+        return [self._config.c3_synth[i] for i in range(5)]
+
+    @c3_synth.setter
+    def c3_synth(self, values):
+        if not isinstance(values, list) or len(values) != 5:
+            raise ValueError("c3_synth must be a list with 5 integers.")
+        for i in range(5):
+            self._config.c3_synth[i] = values[i]
+ 
     # String properties
     @property
     def file_pattern(self):
