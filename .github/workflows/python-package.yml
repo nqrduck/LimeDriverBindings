@@ -20,10 +20,6 @@ jobs:
       with:
         submodules: 'recursive'
 
-    - name: Get latest package lists
-      run: |
-        pacman -Sy
-
     - name: Install dependencies
       run: |
         yes | pacman -S python python-pip hdf5 limesuite python-build
