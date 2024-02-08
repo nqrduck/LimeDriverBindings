@@ -1,0 +1,36 @@
+name: Python package build on Arch Linux
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest 
+
+    container:
+      image: archlinux:latest
+      options: --privileged
+
+    steps:
+    - name: Install git
+      run: |
+        yes | pacman -Sy git
+
+    - name: Checkout repository
+      uses: actions/checkout@v2
+      with:
+        submodules: 'recursive'
+        token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Install dependencies
+      run: |
+        yes | pacman -S python python-pip hdf5 limesuite python-build automake gcc pkgconf base-devel
+
+    - name: Build the package
+      run: |
+        python -m build
+
+    - name: Upload built packages as artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: built-package
+        path: dist/
