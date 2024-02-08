@@ -1,0 +1,37 @@
+name: Python package build on Arch Linux
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest 
+
+    container:
+      image: archlinux:latest
+      options: --privileged
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Update system packages
+      run: |
+        yes | pacman -Syu
+
+    - name: Install dependencies
+      run: |
+        yes | pacman -S python python-pip hdf5 limesuite
+
+    - name: Install build tool
+      run: |
+        pip install build
+
+    - name: Build the package
+      run: |
+        python -m build
+
+    - name: Upload built packages as artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: built-package
+        path: dist/
