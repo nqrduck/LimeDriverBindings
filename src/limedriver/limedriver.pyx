@@ -95,7 +95,7 @@ cdef class PyLimeConfig:
     cdef LimeConfig_t* _config
 
     def __cinit__(self, Npulses):
-        self._config = <LimeConfig_t*>malloc(sizeof(LimeConfig_t))
+        self._config = <LimeConfig_t*>PyMem_Malloc(sizeof(LimeConfig_t))
         if self._config is NULL:
             raise MemoryError()
 
@@ -103,79 +103,77 @@ cdef class PyLimeConfig:
         self._config.Npulses = Npulses
 
         # Allocate memory for string fields
-        self._config.file_pattern = <char*>malloc(256)
-        self._config.file_stamp = <char*>malloc(256)
-        self._config.save_path = <char*>malloc(256)
-        self._config.stamp_start = <char*>malloc(256)
-        self._config.stamp_end = <char*>malloc(256)
+        self._config.file_pattern = <char*>PyMem_Malloc(256)
+        self._config.file_stamp = <char*>PyMem_Malloc(256)
+        self._config.save_path = <char*>PyMem_Malloc(256)
+        self._config.stamp_start = <char*>PyMem_Malloc(256)
+        self._config.stamp_end = <char*>PyMem_Malloc(256)
 
         # Allocate memory for arrays with Npulses elements
-        self._config.p_dur = <double*>malloc(Npulses * sizeof(double))
-        self._config.p_dur_smp = <int*>malloc(Npulses * sizeof(int))
-        self._config.p_offs = <int*>malloc(Npulses * sizeof(int))
-        self._config.p_amp = <double*>malloc(Npulses * sizeof(double))
-        self._config.p_frq = <double*>malloc(Npulses * sizeof(double))
-        self._config.p_frq_smp = <double*>malloc(Npulses * sizeof(double))
-        self._config.p_pha = <double*>malloc(Npulses * sizeof(double))
-        self._config.p_phacyc_N = <int*>malloc(Npulses * sizeof(int))
-        self._config.p_phacyc_lev = <int*>malloc(Npulses * sizeof(int))
+        self._config.p_dur = <double*>PyMem_Malloc(Npulses * sizeof(double))
+        self._config.p_dur_smp = <int*>PyMem_Malloc(Npulses * sizeof(int))
+        self._config.p_offs = <int*>PyMem_Malloc(Npulses * sizeof(int))
+        self._config.p_amp = <double*>PyMem_Malloc(Npulses * sizeof(double))
+        self._config.p_frq = <double*>PyMem_Malloc(Npulses * sizeof(double))
+        self._config.p_frq_smp = <double*>PyMem_Malloc(Npulses * sizeof(double))
+        self._config.p_pha = <double*>PyMem_Malloc(Npulses * sizeof(double))
+        self._config.p_phacyc_N = <int*>PyMem_Malloc(Npulses * sizeof(int))
+        self._config.p_phacyc_lev = <int*>PyMem_Malloc(Npulses * sizeof(int))
         
-        self._config.am_frq = <double*>malloc(Npulses * sizeof(double))
-        self._config.am_pha = <double*>malloc(Npulses * sizeof(double))
-        self._config.am_depth = <double*>malloc(Npulses * sizeof(double))
-        self._config.am_mode = <int*>malloc(Npulses * sizeof(int))
-        self._config.am_frq_smp = <double*>malloc(Npulses * sizeof(double))
-        self._config.fm_frq = <double*>malloc(Npulses * sizeof(double))
-        self._config.fm_pha = <double*>malloc(Npulses * sizeof(double))
-        self._config.fm_width = <double*>malloc(Npulses * sizeof(double))
-        self._config.fm_mode = <int*>malloc(Npulses * sizeof(int))
-        self._config.fm_frq_smp = <double*>malloc(Npulses * sizeof(double))
-        self._config.p_c0_en = <int*>malloc(Npulses * sizeof(int))
-        self._config.p_c1_en = <int*>malloc(Npulses * sizeof(int))
-        self._config.p_c2_en = <int*>malloc(Npulses * sizeof(int))
-        self._config.p_c3_en = <int*>malloc(Npulses * sizeof(int))
-
-        # Memory for arrays with 4 elements
-        self._config.RX_gain_rback = <int*>malloc(4 * sizeof(int))
-        self._config.TX_gain_rback = <int*>malloc(3 * sizeof(int))
-        self._config.c0_tim = <int*>malloc(4 * sizeof(int))
-        self._config.c1_tim = <int*>malloc(4 * sizeof(int))
-        self._config.c2_tim = <int*>malloc(4 * sizeof(int))
-        self._config.c3_tim = <int*>malloc(4 * sizeof(int))
-
-        # Memory for arrays with 5 elements
-        self._config.c0_synth = <int*>malloc(5 * sizeof(int))
-        self._config.c1_synth = <int*>malloc(5 * sizeof(int))
-        self._config.c2_synth = <int*>malloc(5 * sizeof(int))
-        self._config.c3_synth = <int*>malloc(5 * sizeof(int))
+        self._config.am_frq = <double*>PyMem_Malloc(Npulses * sizeof(double))
+        self._config.am_pha = <double*>PyMem_Malloc(Npulses * sizeof(double))
+        self._config.am_depth = <double*>PyMem_Malloc(Npulses * sizeof(double))
+        self._config.am_mode = <int*>PyMem_Malloc(Npulses * sizeof(int))
+        self._config.am_frq_smp = <double*>PyMem_Malloc(Npulses * sizeof(double))
+        self._config.fm_frq = <double*>PyMem_Malloc(Npulses * sizeof(double))
+        self._config.fm_pha = <double*>PyMem_Malloc(Npulses * sizeof(double))
+        self._config.fm_width = <double*>PyMem_Malloc(Npulses * sizeof(double))
+        self._config.fm_mode = <int*>PyMem_Malloc(Npulses * sizeof(int))
+        self._config.fm_frq_smp = <double*>PyMem_Malloc(Npulses * sizeof(double))
+        self._config.p_c0_en = <int*>PyMem_Malloc(Npulses * sizeof(int))
+        self._config.p_c1_en = <int*>PyMem_Malloc(Npulses * sizeof(int))
+        self._config.p_c2_en = <int*>PyMem_Malloc(Npulses * sizeof(int))
+        self._config.p_c3_en = <int*>PyMem_Malloc(Npulses * sizeof(int))
 
     def __dealloc__(self):
         if self._config is not NULL:
-            free(self._config.p_frq)
-            free(self._config.p_dur)    
-            free(self._config.p_dur_smp)
-            free(self._config.p_offs)
-            free(self._config.p_amp)
-            free(self._config.p_frq_smp)
-            free(self._config.p_pha)
-            free(self._config.p_phacyc_N)
-            free(self._config.p_phacyc_lev)
-            free(self._config.am_frq)
-            free(self._config.am_pha)
-            free(self._config.am_depth)
-            free(self._config.am_mode)
-            free(self._config.am_frq_smp)
-            free(self._config.fm_frq)
-            free(self._config.fm_pha)
-            free(self._config.fm_width)
-            free(self._config.fm_mode)
-            free(self._config.fm_frq_smp)
-            free(self._config.p_c0_en)
-            free(self._config.p_c1_en)
-            free(self._config.p_c2_en)
-            free(self._config.p_c3_en)
+            # Memory for arrays with Npulses elements
+            PyMem_Free(self._config.p_frq) 
+            PyMem_Free(self._config.p_dur_smp)
+            PyMem_Free(self._config.p_offs)
+            PyMem_Free(self._config.p_amp)
+            PyMem_Free(self._config.p_frq_smp)
+            PyMem_Free(self._config.p_pha)
+            PyMem_Free(self._config.p_phacyc_N)
+            PyMem_Free(self._config.p_phacyc_lev)
 
-            free(self._config)
+            PyMem_Free(self._config.am_frq)
+            PyMem_Free(self._config.am_pha)
+            PyMem_Free(self._config.am_depth)
+            PyMem_Free(self._config.am_mode)
+            PyMem_Free(self._config.am_frq_smp)
+            PyMem_Free(self._config.fm_frq)
+            PyMem_Free(self._config.fm_pha)
+            PyMem_Free(self._config.fm_width)
+            PyMem_Free(self._config.fm_mode)
+            PyMem_Free(self._config.fm_frq_smp)
+
+            PyMem_Free(self._config.p_c0_en)
+            PyMem_Free(self._config.p_c1_en)
+            PyMem_Free(self._config.p_c2_en)
+            PyMem_Free(self._config.p_c3_en)
+
+            print("Freeing string fields")
+            # Memory for string fields
+            PyMem_Free(&self._config.file_pattern)
+            PyMem_Free(&self._config.file_stamp)
+            PyMem_Free(&self._config.save_path)
+            PyMem_Free(&self._config.stamp_start)
+            PyMem_Free(&self._config.stamp_end)
+
+            print("Freeing LimeConfig_t")
+            # Free the main structure
+            PyMem_Free(self._config)
 
 
     @property
