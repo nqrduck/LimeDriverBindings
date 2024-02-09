@@ -28,7 +28,7 @@ ext_modules = [
     Extension(
         'limedriver.binding',
         sources=['src/limedriver/limedriver.pyx', 'extern/limedriver/src/limedriver.cpp'],
-        include_dirs=["extern/limedriver/src/"],
+        include_dirs=["extern/limedriver/src/", "/usr/include/hdf5/serial/"], # TODO: This is REALLY ugly.
         libraries=["LimeSuite", "hdf5_cpp"],
         language="c++",
     ),
