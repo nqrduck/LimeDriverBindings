@@ -92,89 +92,10 @@ cdef extern from "limedriver.h":
         
 
 cdef class PyLimeConfig:
-    cdef LimeConfig_t* _config
+    cdef LimeConfig_t _config
 
     def __cinit__(self, Npulses):
-        self._config = <LimeConfig_t*>PyMem_Malloc(sizeof(LimeConfig_t))
-        if self._config is NULL:
-            raise MemoryError()
-
-        # Set Npulses
-        self._config.Npulses = Npulses
-
-        # Allocate memory for string fields
-        self._config.file_pattern = <char*>PyMem_Malloc(256)
-        self._config.file_stamp = <char*>PyMem_Malloc(256)
-        self._config.save_path = <char*>PyMem_Malloc(256)
-        self._config.stamp_start = <char*>PyMem_Malloc(256)
-        self._config.stamp_end = <char*>PyMem_Malloc(256)
-
-        # Allocate memory for arrays with Npulses elements
-        self._config.p_dur = <double*>PyMem_Malloc(Npulses * sizeof(double))
-        self._config.p_dur_smp = <int*>PyMem_Malloc(Npulses * sizeof(int))
-        self._config.p_offs = <int*>PyMem_Malloc(Npulses * sizeof(int))
-        self._config.p_amp = <double*>PyMem_Malloc(Npulses * sizeof(double))
-        self._config.p_frq = <double*>PyMem_Malloc(Npulses * sizeof(double))
-        self._config.p_frq_smp = <double*>PyMem_Malloc(Npulses * sizeof(double))
-        self._config.p_pha = <double*>PyMem_Malloc(Npulses * sizeof(double))
-        self._config.p_phacyc_N = <int*>PyMem_Malloc(Npulses * sizeof(int))
-        self._config.p_phacyc_lev = <int*>PyMem_Malloc(Npulses * sizeof(int))
-        
-        self._config.am_frq = <double*>PyMem_Malloc(Npulses * sizeof(double))
-        self._config.am_pha = <double*>PyMem_Malloc(Npulses * sizeof(double))
-        self._config.am_depth = <double*>PyMem_Malloc(Npulses * sizeof(double))
-        self._config.am_mode = <int*>PyMem_Malloc(Npulses * sizeof(int))
-        self._config.am_frq_smp = <double*>PyMem_Malloc(Npulses * sizeof(double))
-        self._config.fm_frq = <double*>PyMem_Malloc(Npulses * sizeof(double))
-        self._config.fm_pha = <double*>PyMem_Malloc(Npulses * sizeof(double))
-        self._config.fm_width = <double*>PyMem_Malloc(Npulses * sizeof(double))
-        self._config.fm_mode = <int*>PyMem_Malloc(Npulses * sizeof(int))
-        self._config.fm_frq_smp = <double*>PyMem_Malloc(Npulses * sizeof(double))
-        self._config.p_c0_en = <int*>PyMem_Malloc(Npulses * sizeof(int))
-        self._config.p_c1_en = <int*>PyMem_Malloc(Npulses * sizeof(int))
-        self._config.p_c2_en = <int*>PyMem_Malloc(Npulses * sizeof(int))
-        self._config.p_c3_en = <int*>PyMem_Malloc(Npulses * sizeof(int))
-
-    def __dealloc__(self):
-        if self._config is not NULL:
-            # Memory for arrays with Npulses elements
-            PyMem_Free(self._config.p_frq) 
-            PyMem_Free(self._config.p_dur_smp)
-            PyMem_Free(self._config.p_offs)
-            PyMem_Free(self._config.p_amp)
-            PyMem_Free(self._config.p_frq_smp)
-            PyMem_Free(self._config.p_pha)
-            PyMem_Free(self._config.p_phacyc_N)
-            PyMem_Free(self._config.p_phacyc_lev)
-
-            PyMem_Free(self._config.am_frq)
-            PyMem_Free(self._config.am_pha)
-            PyMem_Free(self._config.am_depth)
-            PyMem_Free(self._config.am_mode)
-            PyMem_Free(self._config.am_frq_smp)
-            PyMem_Free(self._config.fm_frq)
-            PyMem_Free(self._config.fm_pha)
-            PyMem_Free(self._config.fm_width)
-            PyMem_Free(self._config.fm_mode)
-            PyMem_Free(self._config.fm_frq_smp)
-
-            PyMem_Free(self._config.p_c0_en)
-            PyMem_Free(self._config.p_c1_en)
-            PyMem_Free(self._config.p_c2_en)
-            PyMem_Free(self._config.p_c3_en)
-
-            print("Freeing string fields")
-            # Memory for string fields
-            PyMem_Free(&self._config.file_pattern)
-            PyMem_Free(&self._config.file_stamp)
-            PyMem_Free(&self._config.save_path)
-            PyMem_Free(&self._config.stamp_start)
-            PyMem_Free(&self._config.stamp_end)
-
-            print("Freeing LimeConfig_t")
-            # Free the main structure
-            PyMem_Free(self._config)
-
+        self._config = initializeLimeConfig(Npulses)
 
     @property
     def srate(self):
@@ -826,7 +747,7 @@ cdef class PyLimeConfig:
         return instance
 
     def run(self):
-        return run_experiment_from_LimeCfg(self._config[0])
+        return run_experiment_from_LimeCfg(self._config)
 
     def get_path(self):
         path = self.save_path + self.file_stamp + '_' + self.file_pattern + '.h5'
