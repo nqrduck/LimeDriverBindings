@@ -34,7 +34,6 @@ class HDF():
         else:
             f = h5py.File(self.HDFsrc, 'r')
             
-            print("opened file")
             HDFkeys = list(f.keys())
             
             for ii, HDFkey in enumerate(HDFkeys):
@@ -44,11 +43,9 @@ class HDF():
                     inddim = dsize[0]
                     self.tdy = np.zeros((int(dsize[1]/2), int(dsize[0] * len(HDFkeys))),dtype=np.complex_)
                     
-                    print("initialize")
                     # initialize the output objects
                     self.attrs = [dynclass() for jj in range(len(HDFkeys))]
                     
-                    print("get the attribute keys")
                     # get the attribute keys
                     self.parsoutp = {}
                     ii_oupargs = 0
@@ -62,9 +59,6 @@ class HDF():
                             self.parsoutp['//'+str(ii_oupargs)] = [ item[1], itemname]
                             ii_oupargs+=1
 
-                        print("end of loop")
-                            
-                    print("look for  vars")
                     # look for eventual parvar lists
                     self.parvar = {}
                     for item in f.attrs.items():
