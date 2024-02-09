@@ -16,7 +16,6 @@ class BuildExtCommand(build_ext):
         for ext in self.extensions:
             ext.extra_compile_args = rpath_flags
             ext.extra_link_args = rpath_flags
-            ext.libraries.extend(['hdf5', 'hdf5_cpp'])
         build_ext.build_extensions(self)
 
         super().build_extensions()
