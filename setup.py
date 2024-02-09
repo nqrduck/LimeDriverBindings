@@ -12,6 +12,13 @@ class BuildExtCommand(build_ext):
     """Custom build_ext command to ensure that the submodule is retrieved and built."""
 
     def build_extensions(self):
+        rpath_flags = ['-Wl,-rpath,/usr/lib/']
+        for ext in self.extensions:
+            ext.extra_compile_args = rpath_flags
+            ext.extra_link_args = rpath_flags
+            ext.libraries.extend(['hdf5', 'hdf5_cpp'])
+        build_ext.build_extensions(self)
+
         super().build_extensions()
 
     def run(self):
