@@ -26,4 +26,4 @@ jobs:
 
     - name: Build the package
       run: |
-        python -m build
+        python3 -m build
