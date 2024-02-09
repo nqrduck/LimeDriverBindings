@@ -92,91 +92,10 @@ cdef extern from "limedriver.h":
         
 
 cdef class PyLimeConfig:
-    cdef LimeConfig_t* _config
+    cdef LimeConfig_t _config
 
     def __cinit__(self, Npulses):
-        self._config = <LimeConfig_t*>malloc(sizeof(LimeConfig_t))
-        if self._config is NULL:
-            raise MemoryError()
-
-        # Set Npulses
-        self._config.Npulses = Npulses
-
-        # Allocate memory for string fields
-        self._config.file_pattern = <char*>malloc(256)
-        self._config.file_stamp = <char*>malloc(256)
-        self._config.save_path = <char*>malloc(256)
-        self._config.stamp_start = <char*>malloc(256)
-        self._config.stamp_end = <char*>malloc(256)
-
-        # Allocate memory for arrays with Npulses elements
-        self._config.p_dur = <double*>malloc(Npulses * sizeof(double))
-        self._config.p_dur_smp = <int*>malloc(Npulses * sizeof(int))
-        self._config.p_offs = <int*>malloc(Npulses * sizeof(int))
-        self._config.p_amp = <double*>malloc(Npulses * sizeof(double))
-        self._config.p_frq = <double*>malloc(Npulses * sizeof(double))
-        self._config.p_frq_smp = <double*>malloc(Npulses * sizeof(double))
-        self._config.p_pha = <double*>malloc(Npulses * sizeof(double))
-        self._config.p_phacyc_N = <int*>malloc(Npulses * sizeof(int))
-        self._config.p_phacyc_lev = <int*>malloc(Npulses * sizeof(int))
-        
-        self._config.am_frq = <double*>malloc(Npulses * sizeof(double))
-        self._config.am_pha = <double*>malloc(Npulses * sizeof(double))
-        self._config.am_depth = <double*>malloc(Npulses * sizeof(double))
-        self._config.am_mode = <int*>malloc(Npulses * sizeof(int))
-        self._config.am_frq_smp = <double*>malloc(Npulses * sizeof(double))
-        self._config.fm_frq = <double*>malloc(Npulses * sizeof(double))
-        self._config.fm_pha = <double*>malloc(Npulses * sizeof(double))
-        self._config.fm_width = <double*>malloc(Npulses * sizeof(double))
-        self._config.fm_mode = <int*>malloc(Npulses * sizeof(int))
-        self._config.fm_frq_smp = <double*>malloc(Npulses * sizeof(double))
-        self._config.p_c0_en = <int*>malloc(Npulses * sizeof(int))
-        self._config.p_c1_en = <int*>malloc(Npulses * sizeof(int))
-        self._config.p_c2_en = <int*>malloc(Npulses * sizeof(int))
-        self._config.p_c3_en = <int*>malloc(Npulses * sizeof(int))
-
-        # Memory for arrays with 4 elements
-        self._config.RX_gain_rback = <int*>malloc(4 * sizeof(int))
-        self._config.TX_gain_rback = <int*>malloc(3 * sizeof(int))
-        self._config.c0_tim = <int*>malloc(4 * sizeof(int))
-        self._config.c1_tim = <int*>malloc(4 * sizeof(int))
-        self._config.c2_tim = <int*>malloc(4 * sizeof(int))
-        self._config.c3_tim = <int*>malloc(4 * sizeof(int))
-
-        # Memory for arrays with 5 elements
-        self._config.c0_synth = <int*>malloc(5 * sizeof(int))
-        self._config.c1_synth = <int*>malloc(5 * sizeof(int))
-        self._config.c2_synth = <int*>malloc(5 * sizeof(int))
-        self._config.c3_synth = <int*>malloc(5 * sizeof(int))
-
-    def __dealloc__(self):
-        if self._config is not NULL:
-            free(self._config.p_frq)
-            free(self._config.p_dur)    
-            free(self._config.p_dur_smp)
-            free(self._config.p_offs)
-            free(self._config.p_amp)
-            free(self._config.p_frq_smp)
-            free(self._config.p_pha)
-            free(self._config.p_phacyc_N)
-            free(self._config.p_phacyc_lev)
-            free(self._config.am_frq)
-            free(self._config.am_pha)
-            free(self._config.am_depth)
-            free(self._config.am_mode)
-            free(self._config.am_frq_smp)
-            free(self._config.fm_frq)
-            free(self._config.fm_pha)
-            free(self._config.fm_width)
-            free(self._config.fm_mode)
-            free(self._config.fm_frq_smp)
-            free(self._config.p_c0_en)
-            free(self._config.p_c1_en)
-            free(self._config.p_c2_en)
-            free(self._config.p_c3_en)
-
-            free(self._config)
-
+        self._config = initializeLimeConfig(Npulses)
 
     @property
     def srate(self):
@@ -750,87 +669,11 @@ cdef class PyLimeConfig:
     def stamp_end(self, value):
         self._config.stamp_end = value.encode('utf-8')
 
-    @classmethod
-    def initialize(cls, int Npulses):
-        cdef LimeConfig_t config = initializeLimeConfig(Npulses)
-
-        cdef PyLimeConfig instance = cls.__new__(cls, Npulses)
-
-        instance.srate = config.srate
-        instance.frq = config.frq
-        instance.frq_set = config.frq_set
-        instance.RX_LPF = config.RX_LPF
-        instance.TX_LPF = config.TX_LPF
-        instance.RX_gain = config.RX_gain
-        instance.TX_gain = config.TX_gain
-        instance.TX_IcorrDC = config.TX_IcorrDC
-        instance.TX_QcorrDC = config.TX_QcorrDC
-        instance.TX_IcorrGain = config.TX_IcorrGain
-        instance.TX_QcorrGain = config.TX_QcorrGain
-        instance.TX_IQcorrPhase = config.TX_IQcorrPhase
-        instance.RX_IcorrGain = config.RX_IcorrGain
-        instance.RX_QcorrGain = config.RX_QcorrGain
-        instance.RX_IQcorrPhase = config.RX_IQcorrPhase
-        instance.RX_gain_rback = config.RX_gain_rback
-        instance.TX_gain_rback = config.TX_gain_rback
-        instance.Npulses = config.Npulses
-        instance.averages = config.averages
-        instance.repetitions = config.repetitions
-        instance.pcyc_bef_avg = config.pcyc_bef_avg
-        instance.reptime_secs = config.reptime_secs
-        instance.rectime_secs = config.rectime_secs
-        instance.reptime_smps = config.reptime_smps
-        instance.rectime_smps = config.rectime_smps
-        instance.buffersize = config.buffersize
-        instance.override_init = config.override_init
-        instance.override_save = config.override_save
-
-        instance.file_pattern = config.file_pattern.decode('utf-8')
-        instance.file_stamp = config.file_stamp.decode('utf-8')
-        instance.save_path = config.save_path.decode('utf-8')
-        instance.stamp_start = config.stamp_start.decode('utf-8')
-        instance.stamp_end = config.stamp_end.decode('utf-8')
-
-
-        instance.p_dur = [config.p_dur[i] for i in range(Npulses)]
-        instance.p_dur_smp = [config.p_dur_smp[i] for i in range(Npulses)]
-        instance.p_offs = [config.p_offs[i] for i in range(Npulses)]
-        instance.p_amp = [config.p_amp[i] for i in range(Npulses)]
-        instance.p_frq = [config.p_frq[i] for i in range(Npulses)]
-        instance.p_frq_smp = [config.p_frq_smp[i] for i in range(Npulses)]
-        instance.p_pha = [config.p_pha[i] for i in range(Npulses)]
-        instance.p_phacyc_N = [config.p_phacyc_N[i] for i in range(Npulses)]
-        instance.p_phacyc_lev = [config.p_phacyc_lev[i] for i in range(Npulses)]
-        instance.am_frq = [config.am_frq[i] for i in range(Npulses)]
-        instance.am_pha = [config.am_pha[i] for i in range(Npulses)]
-        instance.am_depth = [config.am_depth[i] for i in range(Npulses)]
-        instance.am_mode = [config.am_mode[i] for i in range(Npulses)]
-        instance.am_frq_smp = [config.am_frq_smp[i] for i in range(Npulses)]
-        instance.fm_frq = [config.fm_frq[i] for i in range(Npulses)]
-        instance.fm_pha = [config.fm_pha[i] for i in range(Npulses)]
-        instance.fm_width = [config.fm_width[i] for i in range(Npulses)]
-        instance.fm_mode = [config.fm_mode[i] for i in range(Npulses)]
-        instance.fm_frq_smp = [config.fm_frq_smp[i] for i in range(Npulses)]
-        instance.p_c0_en = [config.p_c0_en[i] for i in range(Npulses)]
-        instance.p_c1_en = [config.p_c1_en[i] for i in range(Npulses)]
-        instance.p_c2_en = [config.p_c2_en[i] for i in range(Npulses)]
-        instance.p_c3_en = [config.p_c3_en[i] for i in range(Npulses)]
-
-        instance.c0_tim = [config.c0_tim[i] for i in range(4)]
-        instance.c1_tim = [config.c1_tim[i] for i in range(4)]
-        instance.c2_tim = [config.c2_tim[i] for i in range(4)]
-        instance.c3_tim = [config.c3_tim[i] for i in range(4)]
-        instance.c0_synth = [config.c0_synth[i] for i in range(5)]
-        instance.c1_synth = [config.c1_synth[i] for i in range(5)]
-        instance.c2_synth = [config.c2_synth[i] for i in range(5)]
-        instance.c3_synth = [config.c3_synth[i] for i in range(5)]
-
-        return instance
-
     def run(self):
-        return run_experiment_from_LimeCfg(self._config[0])
+        return run_experiment_from_LimeCfg(self._config)
 
     def get_path(self):
         path = self.save_path + self.file_stamp + '_' + self.file_pattern + '.h5'
         path = pathlib.Path(path).absolute()
         return path
+ 
