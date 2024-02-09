@@ -12,6 +12,10 @@ classifiers = [
     "Topic :: Software Development :: Build Tools",
     "Programming Language :: Python :: 3",
 ]
+dependencies = [
+    "h5py",
+    "matplotlib",
+]
 
 [build-system]
 requires = [
