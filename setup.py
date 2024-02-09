@@ -21,19 +21,15 @@ class BuildExtCommand(build_ext):
         super().run()
 
     def clone_limedriver(self):
-        subprocess.check_call(['git', 'submodule', 'init'])
-        subprocess.check_call(['git', 'submodule', 'update'])
-
-    def build_limedriver(self):
-        subprocess.check_call(['./configure'], cwd='extern/limedriver')
-        subprocess.check_call(['make'], cwd='extern/limedriver')
+        subprocess.check_call(['git', 'submodule', 'init'], shell=True)
+        subprocess.check_call(['git', 'submodule', 'update'], shell=True)
 
 ext_modules = [
     Extension(
         'limedriver.binding',
         sources=['src/limedriver/limedriver.pyx', 'extern/limedriver/src/limedriver.cpp'],
         include_dirs=["extern/limedriver/src/"],
-        libraries=["LimeSuite", "hdf5"],
+        libraries=["LimeSuite", "hdf5_cpp"],
         language="c++",
     ),
 ]
