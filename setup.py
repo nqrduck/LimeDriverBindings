@@ -15,10 +15,8 @@ class BuildExtCommand(build_ext):
         super().build_extensions()
 
     def run(self):
-        if not os.path.exists('extern/limedriver'):
+        if not os.path.exists('extern/limedriver/src'):
             self.clone_limedriver()
-
-        self.build_limedriver()
 
         super().run()
 
