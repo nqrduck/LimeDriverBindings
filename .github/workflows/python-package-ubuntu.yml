@@ -20,10 +20,19 @@ jobs:
       with:
         submodules: 'recursive'
 
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.10
+
+    - name: Prepare Python environment
+      run: |
+        pip install --upgrade pip h5py setuptools wheel build
+
     - name: Install dependencies
       run: |
-        sudo apt-get install -y python3 python3-pip libhdf5-dev limesuite python3-setuptools automake gcc pkg-config build-essential python3-build python3-venv python-is-python3
+        sudo apt-get install -y libhdf5-dev limesuite automake gcc pkg-config build-essential python-is-python3
 
     - name: Build the package
       run: |
-        python3 -m build
+        python -m build
