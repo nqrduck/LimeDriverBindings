@@ -33,7 +33,7 @@ ext_modules = [
         'limedriver.binding',
         sources=['src/limedriver/limedriver.pyx', 'extern/limedriver/src/limedriver.cpp'],
         include_dirs=["extern/limedriver/src/"],
-        libraries=["LimeSuite"],
+        libraries=["LimeSuite", "hdf5"],
         language="c++",
     ),
 ]
