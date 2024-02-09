@@ -31,7 +31,7 @@ jobs:
 
     - name: Install dependencies
       run: |
-        sudo apt-get install -y libhdf5-dev limesuite automake gcc pkg-config build-essential python-is-python3
+        sudo apt-get install -y libhdf5-dev limesuite liblimesuite-dev automake gcc pkg-config build-essential python-is-python3
 
     - name: Build the package
       run: |
