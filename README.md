@@ -27,7 +27,13 @@ python3 -m venv venv
 source venv/bin/activate
 ```
 
-The Python bindings can be installed using pip:
+Ensure that the LimeDriver submodule is initialized:
+
+```bash
+git submodule update --init
+```
+
+Now, the Python bindings can be built and installed using pip:
 
 ```bash
 pip install .
