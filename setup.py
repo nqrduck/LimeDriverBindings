@@ -6,14 +6,13 @@ import os
 
 from Cython.Build import cythonize
 
-os.environ['CXX'] = 'h5c++'
+os.environ['CXX'] = 'h5c++ -shlib'
 
 ext_modules = [
     Extension(
         'limedriver.binding',
         sources=['src/limedriver/limedriver.pyx', 'extern/limedriver/src/limedriver.cpp'],
         include_dirs=["extern/limedriver/src/", "/usr/include/hdf5/serial/"], # TODO: This is REALLY ugly.
-        library_dirs=["/usr/lib/"],
         libraries=["LimeSuite", "hdf5_cpp", "hdf5"],
         language="c++",
     ),
