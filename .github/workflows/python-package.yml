@@ -24,6 +24,14 @@ jobs:
       run: |
         yes | pacman -S python python-pip hdf5 limesuite python-build automake gcc pkgconf base-devel
 
+    - name: Install the package
+      run: |
+        pip install .
+
+    - name: Test if the package can be imported
+      run: |
+        python -m limedriver
+
     - name: Build the package
       run: |
         python -m build
