@@ -26,7 +26,7 @@ jobs:
 
     - name: Install the package
       run: |
-        pip install .
+        pip install . --break-system-packages
 
     - name: Test if the package can be imported
       run: |
