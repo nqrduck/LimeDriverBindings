@@ -50,7 +50,6 @@ class HDF():
                     self.parsoutp = {}
                     ii_oupargs = 0
                     for item in f[HDFkey].attrs.items():
-                        print(item)
                         itemname = item[0][5:]
                         itemarg = item[0][1:4]
                         if not ('///' in itemarg):
