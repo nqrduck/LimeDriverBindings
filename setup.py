@@ -6,7 +6,7 @@ import os
 
 from Cython.Build import cythonize
 
-#os.environ['CXX'] = 'h5c++'
+os.environ['CXX'] = 'h5c++'
 
 class BuildExtCommand(build_ext):
     """Custom build_ext command to ensure that the submodule is retrieved and built."""
