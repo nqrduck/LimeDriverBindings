@@ -1,6 +1,6 @@
 [project]
 name = "limedriver"
-version = "0.1.0"
+version = "0.2.0"
 description = "Python bindings for limedriver"
 authors = [{name = "Kumi", email = "limedriver@kumi.email"}]
 license = {file = "LICENSE"}

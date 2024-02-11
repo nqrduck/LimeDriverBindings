@@ -13,6 +13,7 @@ import pathlib
 cdef extern from "limedriver.h":
     cdef struct LimeConfig_t:
         float srate
+        int channel
         float frq
         float frq_set
         float RX_LPF
@@ -104,6 +105,14 @@ cdef class PyLimeConfig:
     @srate.setter
     def srate(self, float value):
         self._config.srate = value
+
+    @property
+    def channel(self):
+        return self._config.channel
+
+    @channel.setter
+    def channel(self, int value):
+        self._config.channel = value
 
     @property
     def frq(self):
