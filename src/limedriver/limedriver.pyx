@@ -14,6 +14,8 @@ cdef extern from "limedriver.h":
     cdef struct LimeConfig_t:
         float srate
         int channel
+        int TX_matching
+        int RX_matching
         float frq
         float frq_set
         float RX_LPF
@@ -113,6 +115,22 @@ cdef class PyLimeConfig:
     @channel.setter
     def channel(self, int value):
         self._config.channel = value
+
+    @property
+    def TX_matching(self):
+        return self._config.TX_matching
+
+    @TX_matching.setter
+    def TX_matching(self, int value):
+        self._config.TX_matching = value
+
+    @property
+    def RX_matching(self):
+        return self._config.RX_matching
+
+    @RX_matching.setter
+    def RX_matching(self, int value):
+        self._config.RX_matching = value
 
     @property
     def frq(self):
