@@ -724,5 +724,5 @@ def get_device_list():
     return [device.decode('utf-8') for device in devices] 
 
 def get_channels_for_device(device = ""):
-    cdef pair[int, int] channels = getChannelsFromInfo(device)
+    cdef pair[int, int] channels = getChannelsFromInfo(device.encode())
     return channels.first, channels.second
