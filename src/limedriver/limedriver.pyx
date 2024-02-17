@@ -723,6 +723,6 @@ def get_device_list():
     cdef vector[string] devices = getDeviceList()
     return [device.decode('utf-8') for device in devices] 
 
-def get_channels_for_device(device):
+def get_channels_for_device(device = ""):
     cdef pair[int, int] channels = getChannelsFromInfo(device)
     return channels.first, channels.second
