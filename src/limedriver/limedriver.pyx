@@ -661,6 +661,14 @@ cdef class PyLimeConfig:
  
     # String properties
     @property
+    def device(self):
+        return self._config.device.decode('utf-8')
+    
+    @device.setter
+    def device(self, str value):
+        self._config.device = value.encode('utf-8')
+
+    @property
     def file_pattern(self):
         return self._config.file_pattern.decode()
 
