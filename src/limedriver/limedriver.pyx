@@ -7,6 +7,7 @@ from libc.string cimport memcpy, strcpy
 
 from libcpp.vector cimport vector
 from libcpp.string cimport string
+from libcpp.pair cimport pair
 
 import pathlib
 
@@ -94,6 +95,8 @@ cdef extern from "limedriver.h":
     cdef LimeConfig_t initializeLimeConfig(int Npulses)
 
     cdef int run_experiment_from_LimeCfg(LimeConfig_t config)
+
+    cdef pair[int, int] getChannelsFromInfo(string device)
 
     cdef vector[string] getDeviceList()
         
@@ -719,3 +722,7 @@ cdef class PyLimeConfig:
 def get_device_list():
     cdef vector[string] devices = getDeviceList()
     return [device.decode('utf-8') for device in devices] 
+
+def get_channels_for_device(device):
+    cdef pair[int, int] channels = getChannelsFromInfo(device)
+    return channels.first, channels.second
