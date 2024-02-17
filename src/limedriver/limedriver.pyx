@@ -5,13 +5,15 @@ from cpython.mem cimport PyMem_Malloc, PyMem_Free
 from libc.stdlib cimport malloc, free
 from libc.string cimport memcpy, strcpy
 
-
+from libcpp.vector cimport vector
 from libcpp.string cimport string
 
 import pathlib
 
 cdef extern from "limedriver.h":
     cdef struct LimeConfig_t:
+        string device
+
         float srate
         int channel
         int TX_matching
@@ -92,6 +94,8 @@ cdef extern from "limedriver.h":
     cdef LimeConfig_t initializeLimeConfig(int Npulses)
 
     cdef int run_experiment_from_LimeCfg(LimeConfig_t config)
+
+    cdef vector[string] getDeviceList()
         
 
 cdef class PyLimeConfig:
@@ -704,3 +708,6 @@ cdef class PyLimeConfig:
         path = pathlib.Path(path).absolute()
         return path
  
+def get_device_list():
+    cdef vector[string] devices = getDeviceList()
+    return [device.decode('utf-8') for device in devices] 
