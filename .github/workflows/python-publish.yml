@@ -49,19 +49,10 @@ jobs:
       run: |
         sudo apt-get install -y libhdf5-dev limesuite liblimesuite-dev automake gcc pkg-config build-essential python-is-python3
 
-    - name: Build wheels with cibuildwheel
-      uses: pypa/cibuildwheel@v2.3.0
-      with:
-        # Only build wheels for CPython 3.10 for manylinux platforms
-        build: "cp310-*"
-      env:
-        CIBW_BUILD_VERBOSITY: 1
-        CIBW_MANYLINUX_X86_64_IMAGE: manylinux2014
-
     - name: Publish to PyPI
       run: |
-        pip install -U twine build
-        python -m build .
+        pip install -U twine cibuildwheel
+        python -m cibuildwheel .
         python -m twine upload --repository pypi --username __token__ --password ${{ secrets.PYPI }} dist/* 
       env:
         PYPI: ${{ secrets.PYPI }}
