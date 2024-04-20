@@ -5,7 +5,7 @@ description = "Python bindings for limedriver"
 authors = [{name = "Kumi", email = "limedriver@kumi.email"}]
 license = {file = "LICENSE"}
 readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.10"
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
@@ -28,3 +28,28 @@ requires = [
 ]
 
 build-backend = "setuptools.build_meta"
+
+[tool.ruff]
+exclude = [
+  "widget.py",
+]
+
+[tool.ruff.lint]
+extend-select = [
+  "UP",  # pyupgrade
+  "D",   # pydocstyle
+]
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["F401"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[project.urls]
+"Homepage" = "https://nqrduck.cool"
+"Bug Tracker" = "https://github.com/nqrduck/limedriverbindings/issues"
+"Source Code" = "https://github.com/nqrduck/limedriverbindings"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/limedriver"]
