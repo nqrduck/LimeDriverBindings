@@ -31,7 +31,9 @@ jobs:
     - name: Install dependencies
       run: |
         sudo apt-get update
+        sudo apt-get install libhdf5-dev limesuite liblimesuite-dev automake gcc pkg-config build-essential python-is-python3
         python -m pip install --upgrade pip
+        pip install --upgrade pip h5py setuptools wheel build
 
     - name: Publish to PyPI
       run: |
