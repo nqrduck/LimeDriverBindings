@@ -43,16 +43,16 @@ jobs:
       run: |
         python -m venv venv
         . ./venv/bin/activate
-        pip install --upgrade pip h5py setuptools wheel build
+        pip install -U twine cibuildwheel
 
-    - name: Install dependencies
-      run: |
-        sudo apt-get install -y libhdf5-dev limesuite liblimesuite-dev automake gcc pkg-config build-essential python-is-python3
+    - name: Build wheels
+        run: python -m cibuildwheel --output-dir dist
+        # to supply options, put them in 'env', like:
+        env:
+          CIBW_BEFORE_BUILD: ./build_wheel.sh
 
     - name: Publish to PyPI
       run: |
-        pip install -U twine cibuildwheel
-        python -m cibuildwheel .
         python -m twine upload --repository pypi --username __token__ --password ${{ secrets.PYPI }} dist/* 
       env:
         PYPI: ${{ secrets.PYPI }}
