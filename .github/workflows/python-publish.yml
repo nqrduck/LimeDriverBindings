@@ -46,7 +46,9 @@ jobs:
         pip install -U twine cibuildwheel
 
     - name: Build wheels
-      run: python -m cibuildwheel --output-dir dist
+      run: |
+        . ./venv/bin/activate
+        python -m cibuildwheel --output-dir dist
       env:
         CIBW_BEFORE_BUILD: ./build_wheel.sh
 
