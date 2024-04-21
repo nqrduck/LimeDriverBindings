@@ -57,6 +57,7 @@ jobs:
 
     - name: Publish to PyPI
       run: |
+        . ./venv/bin/activate
         python -m twine upload --repository pypi --username __token__ --password ${{ secrets.PYPI }} dist/* 
       env:
         PYPI: ${{ secrets.PYPI }}

@@ -1,6 +1,5 @@
 import h5py
 import numpy as np
-import matplotlib.pyplot as plt
 
 # class for accessing data of stored HDF5 file this is from the limr program by andrin doll
 class HDF():
@@ -131,12 +130,6 @@ class HDF():
                     
             print('{:<5}: {:>50}    {:<25}'.format(key, val, self.parsoutp[key][1]))
             
-    def plot_dta(self):
-        plt.plot(self.tdx, self.tdy.real)
-        plt.xlabel('$t$ [$\mu$s]')
-        plt.ylabel('$y$ [Counts]')
-        plt.show()
-                
 # empty class to store dynamic attributes, basically for the attributes in HDF keys
 class dynclass:
     pass
