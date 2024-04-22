@@ -6,7 +6,7 @@ install_enterprise_linux() {
     yum install -y epel-release
     yum update -y  # Update the system
     yum groupinstall -y "Development Tools"
-    yum install -y cmake git libusb-devel hdf5-devel
+    sudo yum install -y cmake git libusbx-devel hdf5-devel gcc-c++ python3-devel python3-numpy swig
 }
 
 # Function to install packages on Debian-based systems (Debian, Ubuntu)
@@ -18,7 +18,7 @@ install_debian() {
 # Function to install packages on Alpine Linux
 install_alpine() {
     apk update  # Update the system
-    apk add --no-cache build-base cmake git libusb-dev hdf5-dev
+    apk add --no-cache build-base git libusb-dev hdf5-dev g++ python3-dev py3-numpy swig
 }
 
 # Determine the Linux distribution and install packages accordingly
