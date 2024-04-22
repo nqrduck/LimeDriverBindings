@@ -12,7 +12,7 @@ install_enterprise_linux() {
 # Function to install packages on Debian-based systems (Debian, Ubuntu)
 install_debian() {
     apt update -y  # Update the system
-    apt install -y build-essential cmake git libusb-1.0-0-dev libhdf5-dev
+    apt install -y build-essential cmake git libusb-1.0-0-dev libhdf5-dev g++ libpython3-dev python3-numpy swig
 }
 
 # Function to install packages on Alpine Linux
@@ -36,6 +36,22 @@ else
     exit 1
 fi
 
+# Clone and build SoapySDR
+rm -rf SoapySDR
+git clone https://github.com/pothosware/SoapySDR.git
+cd SoapySDR || exit
+mkdir build
+cd build || exit
+cmake ..
+make -j$(nproc)
+make install -j$(nproc)
+#On debian we need to run ldconfig
+if [ -f "/etc/debian_version" ]; then
+    ldconfig
+fi
+
+cd ../..
+
 # Clone and build LimeSuite
 rm -rf LimeSuite
 git clone https://github.com/myriadrf/LimeSuite.git
@@ -43,4 +59,8 @@ cd LimeSuite/build || exit
 cmake ../ -DENABLE_GUI=OFF
 make -j$(nproc)
 make install
-ldconfig
+
+# In debian we need ldconfig
+if [ -f "/etc/debian_version" ]; then
+    ldconfig
+fi
