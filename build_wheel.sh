@@ -6,7 +6,7 @@ install_enterprise_linux() {
     yum install -y epel-release
     yum update -y  # Update the system
     yum groupinstall -y "Development Tools"
-    sudo yum install -y cmake git libusbx-devel hdf5-devel gcc-c++ python3-devel python3-numpy swig
+    yum install -y cmake git libusbx-devel hdf5-devel gcc-c++ python3-devel python3-numpy swig
 }
 
 # Function to install packages on Debian-based systems (Debian, Ubuntu)
