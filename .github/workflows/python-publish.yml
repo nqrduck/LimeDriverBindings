@@ -46,14 +46,28 @@ jobs:
       run: |
         python -m venv venv
         . ./venv/bin/activate
-        pip install -U twine cibuildwheel
+        pip install -U twine cibuildwheel build
 
-    - name: Build wheels
+    - name : Build source dist
+      run: |
+        . ./venv/bin/activate
+        python -m build --sdist .
+
+    - name: Build wheels manylinux
       run: |
         . ./venv/bin/activate
         python -m cibuildwheel --output-dir dist
       env:
         CIBW_BEFORE_BUILD: ./build_wheel.sh
+        CIBW_SKIP: "*-musllinux_*"
+
+    - name: Build wheels musllinux
+      run: |
+        . ./venv/bin/activate
+        python -m cibuildwheel --output-dir dist
+      env:
+        CIBW_BEFORE_BUILD: ./build_wheel.sh
+        CIBW_SKIP: "*-manylinux_*"
 
     - name: Publish to PyPI
       run: |
