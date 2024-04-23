@@ -1,0 +1,69 @@
+name: Build, Test, and Upload Python Package
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+      
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  # test:
+  #      uses: ./.github/workflows/ubuntu-python-package.yml  # use the callable tests job to run tests
+
+  deploy:
+
+    runs-on: ubuntu-latest
+
+  #  needs: [test]
+
+    steps:
+    - name: Update package list
+      run: |
+        sudo apt-get update
+
+    - name: Install git
+      run: |
+        sudo apt-get install -y git
+
+    - name: Checkout repository
+      uses: actions/checkout@v2
+      with:
+        submodules: 'recursive'
+
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v2
+      with:
+        python-version: "3.10"
+
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@v3
+
+    - name: Prepare Python environment
+      run: |
+        python -m venv venv
+        . ./venv/bin/activate
+        pip install -U twine cibuildwheel build
+
+    - name : Build source dist
+      run: |
+        . ./venv/bin/activate
+        python -m build --sdist .
+
+    - name: Build wheels manylinux
+      run: |
+        . ./venv/bin/activate
+        python -m cibuildwheel --output-dir dist
+      env:
+        CIBW_BEFORE_BUILD: ./build_wheel.sh
+        CIBW_SKIP: "*-musllinux_*"
+
+    - name: Publish to PyPI
+      run: |
+        . ./venv/bin/activate
+        python -m twine upload --repository pypi --username __token__ --password ${{ secrets.PYPI }} dist/* 
+      env:
+        PYPI: ${{ secrets.PYPI }}
