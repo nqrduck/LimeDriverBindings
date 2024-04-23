@@ -27,6 +27,19 @@ python3 -m venv venv
 source venv/bin/activate
 ```
 
+You can install the Python bindings using pip:
+
+```bash
+pip install lime-driver
+```
+
+Alternatively you can clone the repository and install the Python bindings from source:
+
+```bash
+git clone <this-repo-url>
+cd LimeDriverBindings
+```
+
 Ensure that the LimeDriver submodule is initialized:
 
 ```bash
@@ -51,7 +64,7 @@ import limedriver
 Npulses = 1000
 
 # Create a new PyLimeConfig object
-config = limedriver.PyLimeConfig(Npulses)
+config = limedriver.binding.PyLimeConfig(Npulses)
 
 # Modify the config as needed
 config.srate = 1e6
