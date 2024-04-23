@@ -30,8 +30,10 @@ source venv/bin/activate
 You can install the Python bindings using pip:
 
 ```bash
-pip install lime-driver
+pip install limedriver
 ```
+
+---
 
 Alternatively you can clone the repository and install the Python bindings from source:
 
