@@ -22,7 +22,7 @@ jobs:
 
     - name: Install dependencies
       run: |
-        yes | pacman -S python python-pip hdf5 limesuite python-build automake gcc pkgconf base-devel
+        yes | pacman -S python python-pip hdf5 limesuite python-build automake gcc pkgconf base-devel expat
 
     - name: Install the package
       run: |
