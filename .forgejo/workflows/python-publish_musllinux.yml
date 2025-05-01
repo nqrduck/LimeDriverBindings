@@ -16,18 +16,20 @@ jobs:
 
   deploy:
 
-    runs-on: ubuntu-latest
+    runs-on: docker
+    container:
+      image: node:22-bookworm
 
   #  needs: [test]
 
     steps:
     - name: Update package list
       run: |
-        sudo apt-get update
+        apt-get update
 
     - name: Install git
       run: |
-        sudo apt-get install -y git
+        apt-get install -y git
 
     - name: Checkout repository
       uses: actions/checkout@v2

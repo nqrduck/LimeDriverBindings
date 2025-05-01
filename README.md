@@ -1,6 +1,6 @@
 # Python Bindings for LimeDriver
 
-This is a Python package for the [LimeDriver](https://github.com/nqrduck/LimeDriver/) library.
+This is a Python package for the [LimeDriver](https://git.private.coffee/nqrduck/LimeDriver/) library.
 
 ## Dependencies
 

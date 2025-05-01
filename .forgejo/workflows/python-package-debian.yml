@@ -4,16 +4,18 @@ on: [push, pull_request]
 
 jobs:
   build:
-    runs-on: ubuntu-latest 
+    runs-on: docker
+    container:
+      image: node:22-bookworm
 
     steps:
     - name: Update package list
       run: |
-        sudo apt-get update
+        apt-get update
 
     - name: Install git
       run: |
-        sudo apt-get install -y git
+        apt-get install -y git
 
     - name: Checkout repository
       uses: actions/checkout@v2
@@ -31,7 +33,7 @@ jobs:
 
     - name: Install dependencies
       run: |
-        sudo apt-get install -y libhdf5-dev limesuite liblimesuite-dev automake gcc pkg-config build-essential python-is-python3
+        apt-get install -y libhdf5-dev limesuite liblimesuite-dev automake gcc pkg-config build-essential python-is-python3
 
     - name: Install the package
       run: |
