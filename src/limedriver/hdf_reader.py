@@ -40,7 +40,7 @@ class HDF():
                     # initialize data array
                     dsize = f[HDFkey].shape
                     inddim = dsize[0]
-                    self.tdy = np.zeros((int(dsize[1]/2), int(dsize[0] * len(HDFkeys))),dtype=np.complex_)
+                    self.tdy = np.zeros((int(dsize[1]/2), int(dsize[0] * len(HDFkeys))),dtype=np.complex128)
                     
                     # initialize the output objects
                     self.attrs = [dynclass() for jj in range(len(HDFkeys))]
@@ -66,9 +66,15 @@ class HDF():
                 # Get the data
                 data_raw = np.array(f[HDFkey])
                 try:
-                    self.tdy[:,ii*inddim:(ii+1)*inddim] = np.transpose(np.float_(data_raw[:,::2])) + 1j*np.transpose(np.float_(data_raw[:,1::2]))
-                except:
-                    pass
+                    self.tdy[:,ii*inddim:(ii+1)*inddim] = np.transpose(np.float64(data_raw[:,::2])) + 1j*np.transpose(np.float64(data_raw[:,1::2]))
+                except Exception as e:
+                    print('Problem reading the data of the HDF file! Error: ' + str(e))
+                    self.tdy = []
+                    self.tdx = []
+                    self.attrs = []
+                    self.parsoutp = {}
+                    self.parvar = {}
+                    return
                     
                     
                 # Get the arguments
